@@ -13,7 +13,10 @@
 $(document).ready(function () {
 
 // global variables
+    // searched city (singular)
     let city = "";
+    // list of search history
+    let cityList = "";
 
     // search IDs
     let citySearch = $("#city-search");
@@ -50,7 +53,7 @@ $(document).ready(function () {
     let APIKey = "e8d3342f00d8fa35a4f128c8d46cbea2";
     let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
 
-    // example of an API call (so I don't use up the quota)
+    // reference of an example API call
 
     // {"coord":{"lon":138.6,"lat":-34.9333},
     // "weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04n"}],
@@ -65,14 +68,16 @@ $(document).ready(function () {
         $.ajax({
             url: weatherURL,
             method: "GET",
+            // GET from API then display each wanted response
         }).then(function(response) {
             // weather icon
             let weatherIcon = response.weather[0].icon;
-            let iconURL = "https://openweathermap.org/img/wn/" + weathericon + "@2x.png";
-
+            currentWeather.html(`<img src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png">`);
+            // city name
+            let cityName = response.name;
+            currentCity.html(cityName)
         }) 
     }
-
 
      // display weather based on searched city
      function displayWeather(event){
@@ -96,14 +101,44 @@ $(document).ready(function () {
        })
     }
 
-  // clear search history
+    // function to get searched city & store in local storage
+    function getCity() {
+        city = citySearch.val();
+        if (city && cityList.includes(city) === false) {
+            localStorage.setItem("city name", JSON.stringify(city));
+            cityList.push(city);
+            localStorage.setItem("city history", JSON.stringify(cityList));
+        }
+    }
+
+    // Get history from local storage
+    function getCityHistory() {
+        let cityHistory = JSON.parse(localStorage.getItem("city-list"));
+
+        if (cityHistory) {
+            cityList = cityHistory;
+        } else {
+            cityList = [];
+        }
+    }   
+    getCityHistory();
+
+    // search city function
+    function searchCity(e) {
+        e.preventDefault();
+        getCity();
+    }
+
+    // clear search history
   function clearHistory(event) {
     event.preventDefault();
     cityHistory = [];
     localStorage.removeItem("city-name");
   }
 
+
   // click handlers
+  searchBtn.on("click", searchCity)
   clearBtn.on("click", clearHistory);
 
 
