@@ -1,7 +1,26 @@
+:root {
+    --main-color: #30303a;
+}
+
 body {
-    background-color: #30303a;
+    background-color: var(--main-color)
 }
 
 h1 {
     padding-left: 1rem;
+}
+
+h3 {
+    padding-left: 1rem;
+}
+
+.future-forecast-css {
+    display: flex;
+    justify-content: center;
+    margin-left: 5px;
+    margin-right: 10px;
+}
+
+.forecast {
+    margin-left: 0.5rem;
 }

@@ -20,41 +20,115 @@
     <!-- header -->
     <nav class="navbar navbar-light bg-light">
         <span class="navbar-brand mb-0 h1">
-            <h1 class="pl-3"><i class="fa-solid fa-cloud-sun-rain"></i> Weather Dashboard</h1>
+            <!-- to activate at end to not eat up fontawesome quota -->
+            <!-- <h1 class="pl-3"><i class="fa-solid fa-cloud-sun-rain"></i> Weather Dashboard</h1> -->
+            <h1 class="pl-3">Weather Dashboard</h1>
         </span>
     </nav>
 
-    <!-- sidebar -->
-    <aside class="container">
-        <div class="row">
-            <div class="col-sm-4 pb-3 mt-3 bg-light">
-                <h4 class="p-1">Search for a city:</h4>
+    
+    
+    <div class="container-fluid">
+
+        <!-- container with all main elements -->
+    <main class="row">
+
+        <!-- 'sidebar' -->
+            <aside class="col-sm-4 pb-3 mt-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title pt-1">Search for a city:</h4>
+                </div>
+                <div class="card-body">
                 <!-- form for searching a location by city naem -->
                 <form>
                     <div class="form-group mb-3">
-                      <input type="text" class="form-control col-sm-12" id="location-search" placeholder="Search a city">
+                      <input type="text" class="form-control col-sm-12" id="city-search" placeholder="Search a city">
                     </div>
-                    <button type="submit" class="btn btn-primary col-sm-12">Submit</button>
+                    <button type="submit" class="btn btn-primary col-sm-12" id="search-btn">Search</button>
                   </form>
+
+                  <div class="pb-3 mt-3">
+                    <h5 class="p-1">Search history</h5>
+                    <!-- clear history button -->
+                      <button class="btn btn-primary mt-2 col-sm-12" id="clear-btn">Clear history</button>
+                    <ul class="list-group">
+                        <!-- append search history inside this ul -->
+                    </ul>
+                    </div>
+                    
+                </div>
+
             </div>
-           
-        </div>
-
-        <!-- container for search history -->
-        <div class="row">
-            <div class="col-sm-4 pb-3 mt-3 bg-light">
-                <h5 class="p-1">Search history</h5>
-                <!-- form for searching a location by city naem -->
-                  <button class="btn btn-primary mt-2 col-sm-12" id="clear-btn">Clear history</button>
-            </div>
-        </div>
-
-    </aside>
-
+        </aside>
+        
     <!-- container for search results -->
-    <main class="container">
 
-    </main>
+    <div class="col-sm-8 mt-3">
+    
+    <!-- 'card' to be appended with city (search result) -->
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title pt-2 city-name" id="current-city">City name</h4>
+            </div>
+            <div class="card-body">
+                <div class="row m-2 border border-dark rounded">
+                    <div class="col-sm-12 p-3" id="current-weather">
+                        <p>Temperature: <span class="current" id="temperature"></span></p>
+                        <p>Humidity: <span class="current" id="humidity"></span></p> 
+                        <p>Wind Speed: <span class="current" id="wind-speed"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5-day forecast -->
+            <div id ="future-forecast">
+                <h3>5-Day Forecast:</h3>
+                <div class="row text-light future-forecast-css">
+                    <div class="col-sm-2 bg-info forecast mb-3 mt-2 rounded" >
+                        <p id="f-date-0"></p>
+                        <p id="f-icon-0"></p>
+                        <p>Temp:<span id="f-temp-0"></span></p>
+                        <p>Humidity:<span id="f-humidity-0"></span></p>
+                        <p>Wind Speed:<span id="f-ws-0"></span></p>
+                    </div>
+                    <div class="col-sm-2 bg-info forecast mb-3 mt-2 rounded" >
+                        <p id="f-date-1"></p>
+                        <p id="f-icon-1"></p>
+                        <p>Temp:<span id="f-temp-1"></span></p>
+                        <p>Humidity:<span id="f-humidity-1"></span></p>
+                        <p>Wind Speed:<span id="f-ws-1"></span></p>
+                    </div>
+                    <div class="col-sm-2 bg-info forecast mb-3 mt-2 rounded" >
+                        <p id="f-date-2"></p>
+                        <p id="f-icon-2"></p>
+                        <p>Temp:<span id="f-temp-2"></span></p>
+                        <p>Humidity:<span id="f-humidity-2"></span></p>
+                        <p>Wind Speed:<span id="f-ws-2"></span></p>
+                    </div>
+                    <div class="col-sm-2 bg-info forecast mb-3 mt-2 rounded" >
+                        <p id="f-date-3"></p>
+                        <p id="f-icon-3"></p>
+                        <p>Temp:<span id="f-temp-3"></span></p>
+                        <p>Humidity:<span id="f-humidity-3"></span></p>
+                        <p>Wind Speed:<span id="f-ws-3"></span></p>
+                    </div>
+                    <div class="col-sm-2 bg-info forecast mb-3 mt-2 rounded" >
+                        <p id="f-date-4"></p>
+                        <p id="f-icon-4"></p>
+                        <p>Temp:<span id="f-temp-4"></span></p>
+                        <p>Humidity:<span id="f-humidity-4"></span></p>
+                        <p>Wind Speed:<span id="f-ws-4"></span></p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    </main> 
+
 
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
