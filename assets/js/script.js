@@ -21,6 +21,7 @@ $(document).ready(function () {
     let clearBtn = $("#clear-btn");
     // results IDs
     let futureForecast = $("future-forecast");
+    let currentDay = $("#current-day");
     let currentCity = $("#current-city");
     let currentWeatehr = $("#current-weather");
     let currentTemp = $("#current-temp");
@@ -29,19 +30,8 @@ $(document).ready(function () {
     // array for storing past search history (cities)
     let cityHistory = [];
 
-    // listener for events on get location button
-    $(".location").on("click", function(event) {
-    event.preventDefault();
-    // Get location name entered by the user
-    let userLocation = $(this).attr("user-location").val();
-  })
-
-   // get current hour from dayJS
-  let currentHour = dayjs().hour();
-  console.log("Current Hour in DayJS is " + currentHour);
-  // Testing/debugging only: change number to simulate the hour
-  // let currentHour = 11;
-
+    // set up API
+    let APIkey = "e8d3342f00d8fa35a4f128c8d46cbea2";
 
   // clear search history
   function clearHistory(event) {
@@ -52,5 +42,11 @@ $(document).ready(function () {
 
   // click handlers
   clearBtn.on("click", clearHistory);
+
+    // Date powered by DayJS
+    let dayJS = dayjs().format('DD/MM/YYYY');
+    console.log("Current day is " + dayJS);
+    // display current day
+    currentDay.text("(" + dayJS + ")")
 
  });
