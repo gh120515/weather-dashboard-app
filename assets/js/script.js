@@ -22,6 +22,7 @@ $(document).ready(function () {
     // results IDs
     let futureForecast = $("future-forecast");
     let currentCity = $("#current-city");
+    let currentWeatehr = $("#current-weather");
     let currentTemp = $("#current-temp");
     let currentHum = $("#humidity");
     let currentWS = $("#wind-speed");

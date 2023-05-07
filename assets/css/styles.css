@@ -23,4 +23,16 @@ h3 {
 
 .forecast {
     margin-left: 0.5rem;
+    box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
+}
+
+button {
+    box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
+    transition: transform 200ms;
+}
+
+button:hover {
+    transform: scale(1.03);
+    transition: 100ms linear;
+    transition-duration: 100ms;
 }
