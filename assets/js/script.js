@@ -30,12 +30,52 @@ $(document).ready(function () {
     // array for storing past search history (cities)
     let cityHistory = [];
 
-    // set up API
-    let APIkey = "e8d3342f00d8fa35a4f128c8d46cbea2";
+        // Date powered by DayJS
+        let dayJS = dayjs();
+        let today = dayJS.format('DD/MM/YYYY');
+        console.log("Current day is " + today);
+        // display current day
+        currentDay.text("(" + today + ")")
+    
+        // for loop to display the next 5 dates (for the forecast)
+        function nextFiveDays(){
+            for (i = 0; i < 5; i++){
+                let futureDay = dayJS.add(i+1, "day");
+                $("#f-date-" + i).text(futureDay.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
+            }
+        }
+        nextFiveDays();
+
+    // use API to get weather from searched city
+    let APIKey = "e8d3342f00d8fa35a4f128c8d46cbea2";
+    let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+
+    // example of an API call (so I don't use up the quota)
+
+    // {"coord":{"lon":138.6,"lat":-34.9333},
+    // "weather":[{"id":804,"main":"Clouds","description":"overcast clouds","icon":"04n"}],
+    // "base":"stations",
+    // "main":{"temp":282.59,"feels_like":282.59,"temp_min":281.71,"temp_max":283.89,"pressure":1031,"humidity":80},
+    // "visibility":10000,"wind":{"speed":0.45,"deg":136,"gust":1.34},"clouds":{"all":100},"dt":1683464926,
+    // "sys":{"type":2,"id":2001763,"country":"AU","sunrise":1683408361,"sunset":1683446301},"timezone":34200,"id":2078025,
+    // "name":"Adelaide","cod":200}
+    
+    function displayCurrentWeather(city) {
+        
+        $.ajax({
+            url: weatherURL,
+            method: "GET",
+        }).then(function(response) {
+            // weather icon
+            let weatherIcon = response.weather[0].icon;
+            let iconURL = "https://openweathermap.org/img/wn/" + weathericon + "@2x.png";
+
+        }) 
+    }
 
 
-    // display weather based on searched city
-    function displayWeather(event){
+     // display weather based on searched city
+     function displayWeather(event){
         event.preventDefault();
         if (citySearch.val() !== "") {
             city = citySearch.val().trim();
@@ -43,8 +83,17 @@ $(document).ready(function () {
         }
     }
 
-    function displayCurrentWeather(city) {
-        let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + APIKey;
+    // display future weather (for next 5 days)
+    function displayFutureForecast(city) {
+       $.ajax({
+        url: weatherURL,
+        method: "GET",
+       }).then(function(response){
+        // for loop to iterate through the next 5 days forecast (date separate using dayJS)
+        for (i = 0; i < 5; i++){
+            let
+        }
+       })
     }
 
   // clear search history
@@ -57,24 +106,6 @@ $(document).ready(function () {
   // click handlers
   clearBtn.on("click", clearHistory);
 
-    // Date powered by DayJS
-    let dayJS = dayjs();
-    let today = dayJS.format('DD/MM/YYYY');
-    console.log("Current day is " + today);
-    // display current day
-    currentDay.text("(" + today + ")")
 
-    // days for future 5-day forecast
-    let futureDay0 = dayJS.add(1, "day");
-    let futureDay1 = dayJS.add(2, "day");
-    let futureDay2 = dayJS.add(3, "day");
-    let futureDay3 = dayJS.add(4, "day");
-    let futureDay4 = dayJS.add(5, "day");
-    // display future 5 days
-    $("#f-date-0").text(futureDay0.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
-    $("#f-date-1").text(futureDay1.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
-    $("#f-date-2").text(futureDay2.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
-    $("#f-date-3").text(futureDay3.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
-    $("#f-date-4").text(futureDay4.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
 
  });
