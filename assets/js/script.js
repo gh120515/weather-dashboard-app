@@ -23,7 +23,7 @@ $(document).ready(function () {
     let futureForecast = $("future-forecast");
     let currentDay = $("#current-day");
     let currentCity = $("#current-city");
-    let currentWeatehr = $("#current-weather");
+    let currentWeather = $("#current-weather");
     let currentTemp = $("#current-temp");
     let currentHum = $("#humidity");
     let currentWS = $("#wind-speed");
@@ -32,6 +32,20 @@ $(document).ready(function () {
 
     // set up API
     let APIkey = "e8d3342f00d8fa35a4f128c8d46cbea2";
+
+
+    // display weather based on searched city
+    function displayWeather(event){
+        event.preventDefault();
+        if (citySearch.val() !== "") {
+            city = citySearch.val().trim();
+            displayCurrentWeather(city);
+        }
+    }
+
+    function displayCurrentWeather(city) {
+        let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + APIKey;
+    }
 
   // clear search history
   function clearHistory(event) {
@@ -44,9 +58,23 @@ $(document).ready(function () {
   clearBtn.on("click", clearHistory);
 
     // Date powered by DayJS
-    let dayJS = dayjs().format('DD/MM/YYYY');
-    console.log("Current day is " + dayJS);
+    let dayJS = dayjs();
+    let today = dayJS.format('DD/MM/YYYY');
+    console.log("Current day is " + today);
     // display current day
-    currentDay.text("(" + dayJS + ")")
+    currentDay.text("(" + today + ")")
+
+    // days for future 5-day forecast
+    let futureDay0 = dayJS.add(1, "day");
+    let futureDay1 = dayJS.add(2, "day");
+    let futureDay2 = dayJS.add(3, "day");
+    let futureDay3 = dayJS.add(4, "day");
+    let futureDay4 = dayJS.add(5, "day");
+    // display future 5 days
+    $("#f-date-0").text(futureDay0.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
+    $("#f-date-1").text(futureDay1.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
+    $("#f-date-2").text(futureDay2.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
+    $("#f-date-3").text(futureDay3.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
+    $("#f-date-4").text(futureDay4.format('ddd, DD/MM/YY')).css('font-weight', 'bold');
 
  });
