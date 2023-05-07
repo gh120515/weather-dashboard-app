@@ -16,7 +16,7 @@ $(document).ready(function () {
     // searched city (singular)
     let city = "";
     // list of search history
-    let cityList = "";
+    let cityList = [];
 
     // search IDs
     let citySearch = $("#city-search");
@@ -104,21 +104,25 @@ $(document).ready(function () {
     // function to get searched city & store in local storage
     function getCity() {
         city = citySearch.val();
-        if (city && cityList.includes(city) === false) {
+        if (city) {
             localStorage.setItem("city name", JSON.stringify(city));
             cityList.push(city);
             localStorage.setItem("city history", JSON.stringify(cityList));
+            return city;
+        } 
+        else if (!city) {
+            alert("Please enter a valid city name.");
         }
     }
 
     // Get history from local storage
     function getCityHistory() {
-        let cityHistory = JSON.parse(localStorage.getItem("city-list"));
+        let cityHistory = JSON.parse(localStorage.getItem("city history"));
 
-        if (cityHistory) {
+        if (cityList) {
             cityList = cityHistory;
         } else {
-            cityList = [];
+            cityHistory = [];
         }
     }   
     getCityHistory();
@@ -132,8 +136,8 @@ $(document).ready(function () {
     // clear search history
   function clearHistory(event) {
     event.preventDefault();
-    cityHistory = [];
-    localStorage.removeItem("city-name");
+    cityList = "";
+    localStorage.removeItem("city history");
   }
 
 
