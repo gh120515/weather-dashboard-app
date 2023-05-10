@@ -27,7 +27,7 @@ $(document).ready(function () {
     let currentDay = $("#current-day");
     let currentCity = $("#current-city");
     let currentWeather = $("#current-weather");
-    let currentTemp = $("#current-temp");
+    let currentTemp = $("#temperature");
     let currentHum = $("#humidity");
     let currentWS = $("#wind-speed");
     // array for storing past search history (cities)
@@ -49,9 +49,7 @@ $(document).ready(function () {
         }
         nextFiveDays();
 
-    // use API to get weather from searched city
-    let APIKey = "e8d3342f00d8fa35a4f128c8d46cbea2";
-    let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+
 
     // reference of an example API call
 
@@ -65,6 +63,11 @@ $(document).ready(function () {
     
     // function to get weather data from the most recently searched city
     function displayCurrentWeather(city) {
+
+    // use API to get weather from searched city
+    let APIKey = "e8d3342f00d8fa35a4f128c8d46cbea2";
+    let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
+
         $.ajax({
             url: weatherURL,
             method: "GET",
@@ -78,13 +81,13 @@ $(document).ready(function () {
             currentCity.html(cityName)
             // city temperature
             let cityTemp = response.main.temp;
-            currentWeather.html(cityTemp);
+            currentTemp.html(cityTemp + "°F");
             // city humidity
             let cityHum = response.main.humidity;
-            currentHum.html(cityHum);
+            currentHum.html(cityHum + "%");
             // city wind speed
             let cityWS = response.wind.speed;
-            currentWS.html(cityWS);
+            currentWS.html(cityWS + "mph");
         }) 
     };
 
@@ -93,12 +96,12 @@ $(document).ready(function () {
 
      // display weather based on searched city
      function displayWeather(event){
-        event.preventDefault();
+        // event.preventDefault();
         if (citySearch.val() !== "") {
             city = citySearch.val().trim();
             displayCurrentWeather(city);
         }
-    }
+    };
 
     // display future weather (for next 5 days)
     function displayFutureForecast(city) {
@@ -125,6 +128,8 @@ $(document).ready(function () {
         else if (!city) {
             alert("Please enter a valid city name.");
         }
+
+        getCityHistory();
     }
 
     // load history from local storage & display in sidebar
@@ -134,7 +139,7 @@ $(document).ready(function () {
         let cityHistory = JSON.parse(localStorage.getItem("city history"));
         if (cityHistory) {
             cityHistory.forEach((cityItem) => {
-                $(".list-group").append("<li>" + cityItem + "</li>");
+                $(".list-group").append('<li class="list-group-item mt-1">' + cityItem + '</li>');
             });
         }
     };   
@@ -145,6 +150,7 @@ $(document).ready(function () {
     function searchCity(e) {
         e.preventDefault();
         getCity();
+        displayWeather();
     }
 
     // clear search history
@@ -154,8 +160,16 @@ $(document).ready(function () {
     localStorage.removeItem("city history");
   }
 
+  // call weather data for past search history 
+  $(document).on("click", "li", (event) => {
+    event.preventDefault();
+    let searchHistory = $(event.target).text();
+    city = searchHistory;
+    // re-run get weather for this city
+    displayCurrentWeather();
+  })   
 
-  // click handlers
+  // misc click handlers
   searchBtn.on("click", searchCity)
   clearBtn.on("click", clearHistory);
 

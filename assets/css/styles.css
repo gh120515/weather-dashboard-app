@@ -31,7 +31,7 @@ button {
     transition: transform 200ms;
 }
 
-button:hover {
+button:hover, li:hover {
     transform: scale(1.03);
     transition: 100ms linear;
     transition-duration: 100ms;
