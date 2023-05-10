@@ -22,6 +22,7 @@ $(document).ready(function () {
     let citySearch = $("#city-search");
     let searchBtn = $("#search-btn");
     let clearBtn = $("#clear-btn");
+    let listGroup = $("#list-group");
     // results IDs
     let futureForecast = $("future-forecast");
     let currentDay = $("#current-day");
@@ -35,10 +36,10 @@ $(document).ready(function () {
 
         // Date powered by DayJS
         let dayJS = dayjs();
-        let today = dayJS.format('DD/MM/YYYY');
+        let today = dayJS.format('ddd, DD/MM/YYYY');
         console.log("Current day is " + today);
         // display current day
-        currentDay.text("(" + today + ")")
+        currentDay.text(today);
     
         // for loop to display the next 5 dates (for the forecast)
         function nextFiveDays(){
@@ -81,13 +82,13 @@ $(document).ready(function () {
             currentCity.html(cityName)
             // city temperature
             let cityTemp = response.main.temp;
-            currentTemp.html(cityTemp + "°F");
+            currentTemp.html(cityTemp + " °F");
             // city humidity
             let cityHum = response.main.humidity;
-            currentHum.html(cityHum + "%");
+            currentHum.html(cityHum + " %");
             // city wind speed
             let cityWS = response.wind.speed;
-            currentWS.html(cityWS + "mph");
+            currentWS.html(cityWS + " mph");
         }) 
     };
 
@@ -128,37 +129,53 @@ $(document).ready(function () {
         else if (!city) {
             alert("Please enter a valid city name.");
         }
-
-        getCityHistory();
     }
 
-    // load history from local storage & display in sidebar
-
+    // get search history on page load
     function getCityHistory() {
-        $('#list-group').text("");
+        listGroup.text("");
         let cityHistory = JSON.parse(localStorage.getItem("city history"));
-        if (cityHistory) {
-            cityHistory.forEach((cityItem) => {
-                $(".list-group").append('<li class="list-group-item mt-1">' + cityItem + '</li>');
-            });
-        }
-    };   
 
+        
+        if (cityHistory) {
+            cityList = cityHistory;
+        } else {
+            cityList = [];
+        }
+
+        // if (cityList) {
+        //     cityHistory.forEach((cityItem) => {
+        //         $(".list-group").append('<li class="list-group-item mt-1">' + cityItem + '</li>');
+        //     });
+        // }
+    };
     getCityHistory();
+
+    // append each searched city under history
+    
+    function searchHistory() {
+        listGroup.text("");
+            if (city) {
+                $(".list-group").append('<li class="list-group-item mt-1">' + city + '</li>');
+            };
+        }
 
     // search city function
     function searchCity(e) {
         e.preventDefault();
         getCity();
         displayWeather();
+        searchHistory();
     }
 
     // clear search history
   function clearHistory(event) {
     event.preventDefault();
-    cityList = "";
+    cityList = [];
+    listGroup.text("");
     localStorage.removeItem("city history");
-  }
+    document.location.reload();
+  };
 
   // call weather data for past search history 
   $(document).on("click", "li", (event) => {
@@ -173,6 +190,4 @@ $(document).ready(function () {
   searchBtn.on("click", searchCity)
   clearBtn.on("click", clearHistory);
 
-
-
- });
+});

@@ -36,3 +36,12 @@ button:hover, li:hover {
     transition: 100ms linear;
     transition-duration: 100ms;
 }
+
+#current-weather {
+    padding: 1rem;
+    margin-left: 0.5rem;
+}
+
+.weather-header {
+    background-color: rgb(193, 193, 193);
+}
