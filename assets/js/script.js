@@ -63,8 +63,8 @@ $(document).ready(function () {
     // "sys":{"type":2,"id":2001763,"country":"AU","sunrise":1683408361,"sunset":1683446301},"timezone":34200,"id":2078025,
     // "name":"Adelaide","cod":200}
     
+    // function to get weather data from the most recently searched city
     function displayCurrentWeather(city) {
-        
         $.ajax({
             url: weatherURL,
             method: "GET",
@@ -76,8 +76,20 @@ $(document).ready(function () {
             // city name
             let cityName = response.name;
             currentCity.html(cityName)
+            // city temperature
+            let cityTemp = response.main.temp;
+            currentWeather.html(cityTemp);
+            // city humidity
+            let cityHum = response.main.humidity;
+            currentHum.html(cityHum);
+            // city wind speed
+            let cityWS = response.wind.speed;
+            currentWS.html(cityWS);
         }) 
-    }
+    };
+
+
+    // displayCurrentWeather()
 
      // display weather based on searched city
      function displayWeather(event){
@@ -105,7 +117,7 @@ $(document).ready(function () {
     function getCity() {
         city = citySearch.val();
         if (city) {
-            localStorage.setItem("city name", JSON.stringify(city));
+            localStorage.setItem("city name", city);
             cityList.push(city);
             localStorage.setItem("city history", JSON.stringify(cityList));
             return city;
@@ -115,16 +127,18 @@ $(document).ready(function () {
         }
     }
 
-    // Get history from local storage
-    function getCityHistory() {
-        let cityHistory = JSON.parse(localStorage.getItem("city history"));
+    // load history from local storage & display in sidebar
 
-        if (cityList) {
-            cityList = cityHistory;
-        } else {
-            cityHistory = [];
+    function getCityHistory() {
+        $('#list-group').text("");
+        let cityHistory = JSON.parse(localStorage.getItem("city history"));
+        if (cityHistory) {
+            cityHistory.forEach((cityItem) => {
+                $(".list-group").append("<li>" + cityItem + "</li>");
+            });
         }
-    }   
+    };   
+
     getCityHistory();
 
     // search city function
