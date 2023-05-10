@@ -17,8 +17,6 @@ $(document).ready(function () {
     let city = "";
     // list of search history
     let cityList = [];
-    // coordinates for future forecast
-    let coords = [];
 
     // search IDs
     let citySearch = $("#city-search");
@@ -93,11 +91,6 @@ $(document).ready(function () {
             currentWS.html(cityWS + " mph");
 
             // coordinate data for future forcast (function to come later)
-            // coords.push(response.coord.lat);
-            // coords.push(response.coord.lon);
-            // console.log(coords);
-            // console.log(coords[0]);
-            // console.log(coords[1]);
             displayFutureForecast(response.coord.lat, response.coord.lon);
         }) 
 
@@ -116,7 +109,6 @@ $(document).ready(function () {
 
     // display future weather (for next 5 days) - requires separate function due to separate API call
     function displayFutureForecast(lat, lon) {
-
         let forecastAPI = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
 
        $.ajax({
@@ -124,11 +116,16 @@ $(document).ready(function () {
         method: "GET",
        }).then(function(response){
         // for loop to iterate through the next 5 days forecast (date separate using dayJS)
-        for (i = 0; i < 5; i++){
-            $("#f-icon-" + i).html(`<img src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png">`);
-            $("#f-temp-" + i).html(" " + cityTemp + " °F");
-            $("#f-humidity-" + i).html(" " + cityHum + " %");
-            $("#f-ws-" + i).html(" " + cityWS + " mph");
+        for (i = 0; i < 5; i++) {
+            let fIcon = response.list[i].weather.icon;
+            let fTemp = response.list[i].temp;
+            let fHum = response.list[i].humidity;
+            let fWS = response.list[i].wind.speed;
+
+            $("#f-icon-" + i).html(`<img src="http://openweathermap.org/img/wn/${fIcon}@2x.png">`);
+            $("#f-temp-" + i).html(" " + fTemp + " °F");
+            $("#f-humidity-" + i).html(" " + fHum + " %");
+            $("#f-ws-" + i).html(" " + fWS + " mph");
         }
        })
     }
