@@ -17,6 +17,8 @@ $(document).ready(function () {
     let city = "";
     // list of search history
     let cityList = [];
+    // coordinates for future forecast
+    let coords = [];
 
     // search IDs
     let citySearch = $("#city-search");
@@ -90,15 +92,16 @@ $(document).ready(function () {
             let cityWS = response.wind.speed;
             currentWS.html(cityWS + " mph");
 
-            // future 5 days
-            for (i = 0; i < 5; i++){
-                $("#f-icon-" + i).html(`<img src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png">`);
-                $("#f-temp-" + i).html(cityTemp + " °F");
-                $("#f-humidity-" + i).html(cityHum + " %");
-                $("#f-ws-" + i).html(cityWS + " mph");
-            }
-
+            // coordinate data for future forcast (function to come later)
+            // coords.push(response.coord.lat);
+            // coords.push(response.coord.lon);
+            // console.log(coords);
+            // console.log(coords[0]);
+            // console.log(coords[1]);
+            displayFutureForecast(response.coord.lat, response.coord.lon);
         }) 
+
+        
     };
 
      // display weather based on searched city
@@ -111,18 +114,24 @@ $(document).ready(function () {
         }
     };
 
-    // display future weather (for next 5 days)
-    // function displayFutureForecast(city) {
-    //    $.ajax({
-    //     url: weatherURL,
-    //     method: "GET",
-    //    }).then(function(response){
-    //     // for loop to iterate through the next 5 days forecast (date separate using dayJS)
-    //     for (i = 0; i < 5; i++){
-    //         let forecastIcon = response.list
-    //     }
-    //    })
-    // }
+    // display future weather (for next 5 days) - requires separate function due to separate API call
+    function displayFutureForecast(lat, lon) {
+
+        let forecastAPI = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
+
+       $.ajax({
+        url: forecastAPI,
+        method: "GET",
+       }).then(function(response){
+        // for loop to iterate through the next 5 days forecast (date separate using dayJS)
+        for (i = 0; i < 5; i++){
+            $("#f-icon-" + i).html(`<img src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png">`);
+            $("#f-temp-" + i).html(" " + cityTemp + " °F");
+            $("#f-humidity-" + i).html(" " + cityHum + " %");
+            $("#f-ws-" + i).html(" " + cityWS + " mph");
+        }
+       })
+    }
 
     // function to get searched city & store in local storage
     function getCity() {
@@ -144,11 +153,13 @@ $(document).ready(function () {
         let cityHistory = JSON.parse(localStorage.getItem("city history"));
 
         if (cityHistory) {
-            cityList = cityHistory;
+            cityHistory.forEach(i => {
+                $(".list-group").append('<li class="list-group-item mt-1">' + i + '</li>');
+            });
         } else {
             cityList = [];
         }
-    };
+    }
     getCityHistory();
 
     // append each searched city under history
