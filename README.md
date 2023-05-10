@@ -2,46 +2,43 @@
 
 ## Description
 
-<!-- Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
+This simple weather web app will allow you to search the weather, temperature, humidity and wind speed for the current date & forecast for upcoming five days.
 
-- What was your motivation?
-- Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
-- What problem does it solve?
-- What did you learn? -->
+The app was built using HTML, simple CSS (using a Bootstrap framework) and JavaScript. The primary aim for building this app was to demonstrate practical use of third-party API calls (e.g. for calling weather data).
 
-## Table of Contents (Optional)
-
-<!-- If your README is long, add a table of contents to make it easy for users to find what they need.
-
-- [Installation](#installation)
-- [Usage](#usage)
-- [Credits](#credits)
-- [License](#license) -->
-
+[Deployment Link](https://gh120515.github.io/weather-dashboard-app/)
 
 ## Usage
 
-<!-- Provide instructions and examples for use. Include screenshots as needed.
+### Basic usage
 
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
+Enter a valid city name (e.g. Adelaide, Tokyo... etc) in the search field to call weather data for the current & upcoming five days. The weather will be displayed as an icon.
 
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ``` -->
+![Sample screenshot of the app in use](assets/img/start.png)
+
+### Search history
+
+Your past searches will be displayed below the search bar.
+
+Click on each item (city name) to call the weather data again.
+
+Click on 'Clear history' button to remove all history.
+
+![Sample screenshot of the search history (Melbourne clicked & loaded)](assets/img/history.png)
 
 ## Credits
 
-<!-- List your collaborators, if any, with links to their GitHub profiles.
-
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-If you followed tutorials, include links to those here as well. -->
-
 CSS framework by [Bootstrap](https://getbootstrap.com/)
+
+[Day.js](https://day.js.org/en/), a JavaScript Library for times and dates
 
 Icons by [Font Awesome](https://fontawesome.com/)
 
+[jQuery](https://jquery.com/), a JavaScript Library 
+
 Weather data API by [OpenWeather](https://openweathermap.org/)
+
+Tutorial by [Mark Lassoff](https://www.youtube.com/watch?v=buS3mweBWCA) 
 
 ## License
 
