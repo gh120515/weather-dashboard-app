@@ -31,8 +31,9 @@ $(document).ready(function () {
     let currentTemp = $("#temperature");
     let currentHum = $("#humidity");
     let currentWS = $("#wind-speed");
-    // array for storing past search history (cities)
-    let cityHistory = [];
+    // API Key & URL
+    let APIKey = "e8d3342f00d8fa35a4f128c8d46cbea2";
+    let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
 
         // Date powered by DayJS
         let dayJS = dayjs();
@@ -60,13 +61,12 @@ $(document).ready(function () {
     // "main":{"temp":282.59,"feels_like":282.59,"temp_min":281.71,"temp_max":283.89,"pressure":1031,"humidity":80},
     // "visibility":10000,"wind":{"speed":0.45,"deg":136,"gust":1.34},"clouds":{"all":100},"dt":1683464926,
     // "sys":{"type":2,"id":2001763,"country":"AU","sunrise":1683408361,"sunset":1683446301},"timezone":34200,"id":2078025,
-    // "name":"Adelaide","cod":200}
+    // "name":"Adelaied","cod":200}
     
     // function to get weather data from the most recently searched city
     function displayCurrentWeather(city) {
 
     // use API to get weather from searched city
-    let APIKey = "e8d3342f00d8fa35a4f128c8d46cbea2";
     let weatherURL =  "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey;
 
         $.ajax({
@@ -89,11 +89,17 @@ $(document).ready(function () {
             // city wind speed
             let cityWS = response.wind.speed;
             currentWS.html(cityWS + " mph");
+
+            // future 5 days
+            for (i = 0; i < 5; i++){
+                $("#f-icon-" + i).html(`<img src="http://openweathermap.org/img/wn/${weatherIcon}@2x.png">`);
+                $("#f-temp-" + i).html(cityTemp + " °F");
+                $("#f-humidity-" + i).html(cityHum + " %");
+                $("#f-ws-" + i).html(cityWS + " mph");
+            }
+
         }) 
     };
-
-
-    // displayCurrentWeather()
 
      // display weather based on searched city
      function displayWeather(event){
@@ -101,21 +107,22 @@ $(document).ready(function () {
         if (citySearch.val() !== "") {
             city = citySearch.val().trim();
             displayCurrentWeather(city);
+            // displayFutureForecast(city);
         }
     };
 
     // display future weather (for next 5 days)
-    function displayFutureForecast(city) {
-       $.ajax({
-        url: weatherURL,
-        method: "GET",
-       }).then(function(response){
-        // for loop to iterate through the next 5 days forecast (date separate using dayJS)
-        for (i = 0; i < 5; i++){
-            let
-        }
-       })
-    }
+    // function displayFutureForecast(city) {
+    //    $.ajax({
+    //     url: weatherURL,
+    //     method: "GET",
+    //    }).then(function(response){
+    //     // for loop to iterate through the next 5 days forecast (date separate using dayJS)
+    //     for (i = 0; i < 5; i++){
+    //         let forecastIcon = response.list
+    //     }
+    //    })
+    // }
 
     // function to get searched city & store in local storage
     function getCity() {
@@ -136,23 +143,15 @@ $(document).ready(function () {
         listGroup.text("");
         let cityHistory = JSON.parse(localStorage.getItem("city history"));
 
-        
         if (cityHistory) {
             cityList = cityHistory;
         } else {
             cityList = [];
         }
-
-        // if (cityList) {
-        //     cityHistory.forEach((cityItem) => {
-        //         $(".list-group").append('<li class="list-group-item mt-1">' + cityItem + '</li>');
-        //     });
-        // }
     };
     getCityHistory();
 
     // append each searched city under history
-    
     function searchHistory() {
         listGroup.text("");
             if (city) {
@@ -172,19 +171,20 @@ $(document).ready(function () {
   function clearHistory(event) {
     event.preventDefault();
     cityList = [];
-    listGroup.text("");
     localStorage.removeItem("city history");
     document.location.reload();
   };
 
+//   TODO: DEBUG LI ITEMS
   // call weather data for past search history 
-  $(document).on("click", "li", (event) => {
-    event.preventDefault();
-    let searchHistory = $(event.target).text();
-    city = searchHistory;
-    // re-run get weather for this city
-    displayCurrentWeather();
-  })   
+//   $(document).on("click", "li", (event) => {
+//     event.preventDefault();
+//     let searchHistory = $(event.target).text();
+//     city = searchHistory;
+//     // re-run get weather for this city
+//     displayCurrentWeather();
+//     displayFutureForecast();
+//   })   
 
   // misc click handlers
   searchBtn.on("click", searchCity)
