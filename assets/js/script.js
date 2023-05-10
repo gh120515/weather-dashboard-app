@@ -1,10 +1,3 @@
-// GIVEN a weather dashboard with form inputs
-// WHEN I search for a city
-// THEN I am presented with current and future conditions for that city and that city is added to the search history
-// WHEN I view current weather conditions for that city
-// THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the the wind speed
-// WHEN I view future weather conditions for that city
-// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
 
@@ -50,8 +43,6 @@ $(document).ready(function () {
             }
         }
         nextFiveDays();
-
-
 
     // reference of an example API call
 
@@ -107,7 +98,7 @@ $(document).ready(function () {
         }
     };
 
-    // display future weather (for next 5 days) - requires separate function due to separate API call
+    // display future weather (for next 5 days) - requires separate function due to separate API call (for lat & lon data)
     function displayFutureForecast(lat, lon) {
         let forecastAPI = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
 
@@ -118,24 +109,12 @@ $(document).ready(function () {
         // for loop to iterate through the next 5 days forecast (date separate using dayJS)
         for (i = 0; i < 5; i++) {
             let fIcon = response.list[i+1].weather[0].icon;
-            let fTemp = response.list[i+1].temp;
-            let fHum = response.list[i+1].humidity;
-            let fWS = response.list[i+1].wind.speed;
-
-            // {"cod":"200","message":0,"cnt":40,"list":
-            // [{"dt":1683730800,
-            // "main":{"temp":285.09,
-            // "feels_like":284.38,
-            // "temp_min":285.09,"temp_max":285.16,
-            // "pressure":1027,"sea_level":1027,"grnd_level":1020,
-            // "humidity":78,"temp_kf":-0.07},"weather":
-            // [{"id":800,"main":"Clear","description":"clear sky","icon":"01n"}],
-            // "clouds":{"all":0},
-            // "wind":{"speed":2.91,"deg":53,"gust":4.93},"visibility":10000,"pop":0,"sys":{"pod":"n"},"dt_txt":"2023-05-10 15:00:00"},
-
             $("#f-icon-" + i).html(`<img src="http://openweathermap.org/img/wn/${fIcon}@2x.png">`);
+            let fTemp = response.list[i+1].main.temp;
             $("#f-temp-" + i).html(" " + fTemp + " °F");
+            let fHum = response.list[i+1].main.humidity;
             $("#f-humidity-" + i).html(" " + fHum + " %");
+            let fWS = response.list[i+1].wind.speed;
             $("#f-ws-" + i).html(" " + fWS + " mph");
         }
        })
