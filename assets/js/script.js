@@ -173,16 +173,15 @@ $(document).ready(function () {
     document.location.reload();
   };
 
-//   TODO: DEBUG LI ITEMS
   // call weather data for past search history 
-//   $(document).on("click", "li", (event) => {
-//     event.preventDefault();
-//     let searchHistory = $(event.target).text();
-//     city = searchHistory;
-//     // re-run get weather for this city
-//     displayCurrentWeather();
-//     displayFutureForecast();
-//   })   
+  $(document).on("click", "li", (event) => {
+    event.preventDefault();
+    let searchHistory = $(event.target).text().trim();
+    city = searchHistory;
+    console.log(city);
+    // re-run get weather for this city
+    displayCurrentWeather(city);
+  })   
 
   // misc click handlers
   searchBtn.on("click", searchCity)
