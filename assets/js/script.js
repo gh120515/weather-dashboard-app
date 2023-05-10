@@ -117,10 +117,21 @@ $(document).ready(function () {
        }).then(function(response){
         // for loop to iterate through the next 5 days forecast (date separate using dayJS)
         for (i = 0; i < 5; i++) {
-            let fIcon = response.list[i].weather.icon;
-            let fTemp = response.list[i].temp;
-            let fHum = response.list[i].humidity;
-            let fWS = response.list[i].wind.speed;
+            let fIcon = response.list[i+1].weather[0].icon;
+            let fTemp = response.list[i+1].temp;
+            let fHum = response.list[i+1].humidity;
+            let fWS = response.list[i+1].wind.speed;
+
+            // {"cod":"200","message":0,"cnt":40,"list":
+            // [{"dt":1683730800,
+            // "main":{"temp":285.09,
+            // "feels_like":284.38,
+            // "temp_min":285.09,"temp_max":285.16,
+            // "pressure":1027,"sea_level":1027,"grnd_level":1020,
+            // "humidity":78,"temp_kf":-0.07},"weather":
+            // [{"id":800,"main":"Clear","description":"clear sky","icon":"01n"}],
+            // "clouds":{"all":0},
+            // "wind":{"speed":2.91,"deg":53,"gust":4.93},"visibility":10000,"pop":0,"sys":{"pod":"n"},"dt_txt":"2023-05-10 15:00:00"},
 
             $("#f-icon-" + i).html(`<img src="http://openweathermap.org/img/wn/${fIcon}@2x.png">`);
             $("#f-temp-" + i).html(" " + fTemp + " °F");
